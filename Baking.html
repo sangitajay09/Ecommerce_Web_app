@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="specialty_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+
+            <h1>Explore our wide selection of Baking items...</h1>
+            <ul>
+                <li>Pie fillings</li>
+                <li>Crusts</li>
+                <li>Pudding mixes</li>
+                <li>Pie pans and many more ...</li>
+            </ul>
+
+            <div id ="success_added"></div>
+
+            <!-- Baking display and cart -->
+            <div  id="baking-list"></div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+                Sangita Jayendran
+                SXJ210062
+    </footer>
+    <script>
+        const baking_items =[
+            { name: "Baking soda", price: 10, inventory: 3 },
+            { name: "Apple pie filling", price: 9, inventory: 4 },
+            { name: "Pie crusts", price: 4, inventory: 5 },
+            { name: "Pudding mix", price: 3, inventory: 6 },
+            { name: "Circular nonstick pan", price: 6, inventory: 9 },
+            { name: "Pie mix", price: 3, inventory: 8 },
+        ];
+
+        const bakingList = document.getElementById('baking-list');
+        const success_added = document.getElementById("success_added");
+
+
+        // Function to initialize product data and cart data in localStorage if not already set
+        function initializeData() {
+            if (!localStorage.getItem("baking_items")) {
+                localStorage.setItem("baking_items", JSON.stringify(baking_items));
+            }
+            if (!localStorage.getItem("cart")) {
+                localStorage.setItem("cart", JSON.stringify([]));
+            }
+        }
+
+
+        // Function to update product data in localStorage
+        function updateProductData(products) {
+            localStorage.setItem("baking_items", JSON.stringify(products));
+        }
+
+        // Function to retrieve product data from localStorage
+        function getProductsFromStorage() {
+            return JSON.parse(localStorage.getItem("baking_items"));
+        }
+
+        // Function to retrieve cart data from localStorage
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Function to update the cart and display success message
+        function updateCartAndDisplaySuccess(product, cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        }
+
+        function addToCart(productName) {
+            const products = getProductsFromStorage();
+            const cart = getCartFromStorage();
+
+            const product = products.find(p => p.name === productName);
+            if (product && product.inventory > 0) {
+                // const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    // If the item already exists in the cart, increment the quantity
+                    existingItem.quantity += 1;
+                } else {
+                    // If it's a new item, add it to the existing cart
+                    cart.push({...product, quantity: 1});
+                }
+                updateCartAndDisplaySuccess(product, cart);
+                // localStorage.setItem("cart", JSON.stringify(existingCart));
+                // success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+                product.inventory -= 1;
+                updateProductData(products);
+            } else {
+                alert("This item is out of stock.");
+            }
+        }
+
+
+        function displayBaking_items(){
+            bakingList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            // Check if baking item  is in inventory
+            baking_items.forEach(product => {
+                const productBox = document.createElement("div");
+                productBox.className = "product-box";
+
+                const productImage = document.createElement("img");
+                productImage.alt = product.name;
+                productImage.src = `Images/${product.name}.png`;
+
+                const productName = document.createElement("strong");
+                productName.textContent = `Name: ${product.name}`;
+
+                const quantity = document.createElement("span");
+                quantity.className = "quantity";
+                quantity.textContent = "1 KG";
+
+                const price = document.createElement("span");
+                price.className = "price";
+                price.textContent = `Price: $${product.price}`;
+
+                const cartBtn = document.createElement("a");
+                cartBtn.href = "#";
+                cartBtn.className = "cart-btn";
+                cartBtn.style.textDecoration = "none";
+                cartBtn.innerHTML = `
+                <i class="fas fa-shopping-bag"></i> Add to Cart
+            `;
+
+                cartBtn.addEventListener("click", () => addToCart(product.name));
+
+                productBox.appendChild(productImage);
+                productBox.appendChild(productName);
+                productBox.appendChild(quantity);
+                productBox.appendChild(price);
+                productBox.appendChild(cartBtn);
+                productContainer.appendChild(productBox);
+
+                bakingList.appendChild(productContainer);
+
+
+            });
+        }
+
+        // // Initial display
+        initializeData();
+        displayBaking_items();
+
+    </script>
+</body>
+</html>
+
+
+
+

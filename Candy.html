@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+
+        <div class = "main-content">
+            <h1>Explore our wide selection of Candies...</h1>
+            <ul>
+                <li>Kitkat</li>
+                <li>Eclairs</li>
+                <li>Dairy_Milk</li>
+                <li>Sour patch and many more ...</li>
+            </ul>
+            <!-- Search Form -->
+            <form id="search-form">
+                <label for="candy-name">Enter Candy Name:</label>
+                <input type="text" id="candy-name" required>
+                <label for="candy-amount">Enter Amount:</label>
+                <input type="number" id="candy-amount" required>
+                <button type="button" onclick="displayCandies()">Search</button>
+            </form>
+
+            <div id ="success_added"></div>
+
+            <!-- Candy display and cart -->
+            <div  id="candy-list"></div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        const candies =[
+            { name: "Dairy_Milk", price: 10, inventory: 10 },
+            { name: "Eclairs", price: 8, inventory: 6 },
+            { name: "Hersheys_nuggets", price: 6, inventory: 9 },
+            { name: "Kitkat", price: 12, inventory: 7 },
+            { name: "Reese's", price: 7, inventory: 5 },
+            { name: "Sour patch", price: 9, inventory: 8 },
+        ];
+
+
+        const candySelect = document.getElementById('search-form');
+        const candyList = document.getElementById('candy-list');
+
+        // Function to initialize product data and cart data in localStorage if not already set
+        function initializeData() {
+            if (!localStorage.getItem("candies")) {
+                localStorage.setItem("candies", JSON.stringify(candies));
+            }
+            if (!localStorage.getItem("cart")) {
+                localStorage.setItem("cart", JSON.stringify([]));
+            }
+        }
+
+
+        // Function to update product data in localStorage
+        function updateProductData(products) {
+            localStorage.setItem("candies", JSON.stringify(products));
+        }
+
+        // Function to retrieve product data from localStorage
+        function getProductsFromStorage() {
+            return JSON.parse(localStorage.getItem("candies"));
+        }
+
+        // Function to retrieve cart data from localStorage
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Function to update the cart and display success message
+        function updateCartAndDisplaySuccess(product, cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        }
+
+
+        function addToCart(productName, candyAmount) {
+            const products = getProductsFromStorage();
+            const cart = getCartFromStorage();
+
+            const product = products.find(p => p.name === productName);
+
+            if (product && product.inventory > 0 && candyAmount<=product.inventory) {
+
+                // const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    // If the item already exists in the cart, increment the quantity
+                    existingItem.quantity += candyAmount;
+                } else {
+                    // If it's a new item, add it to the existing cart
+                    cart.push({...product, quantity: candyAmount});
+                }
+                updateCartAndDisplaySuccess(product, cart);
+
+                // localStorage.setItem("cart", JSON.stringify(existingCart));
+                // success_added.innerHTML = `${product.name} - $${candyAmount*product.price} is added to the cart`;
+                product.inventory -= candyAmount;
+                updateProductData(products);
+
+            } else {
+                alert("This item is out of stock.");
+            }
+        }
+
+        function displayInitialCandies(){
+
+            candyList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            // Check if candy is in inventory
+            candies.forEach(product => {
+                const productBox = document.createElement("div");
+                productBox.className = "product-box";
+
+                const productImage = document.createElement("img");
+                productImage.alt = product.name;
+                productImage.src = `Images/${product.name}.png`;
+
+                const productName = document.createElement("strong");
+                productName.textContent = `Name: ${product.name}`;
+
+                const quantity = document.createElement("span");
+                quantity.className = "quantity";
+                quantity.textContent = "1 KG";
+
+                const price = document.createElement("span");
+                price.className = "price";
+                price.textContent = `Price: $${product.price}`;
+
+                const cartBtn = document.createElement("a");
+                cartBtn.href = "#";
+                cartBtn.className = "cart-btn";
+                cartBtn.style.textDecoration = "none";
+                cartBtn.innerHTML = `
+                <i class="fas fa-shopping-bag"></i> Add to Cart
+            `;
+
+                cartBtn.addEventListener("click", () => addToCart(product.name));
+
+                productBox.appendChild(productImage);
+                productBox.appendChild(productName);
+                productBox.appendChild(quantity);
+                productBox.appendChild(price);
+                productBox.appendChild(cartBtn);
+                productContainer.appendChild(productBox);
+
+                candyList.appendChild(productContainer);
+
+            });
+        }
+
+        function displayCandies(){
+
+            const candyName = document.getElementById('candy-name').value;
+            const candyAmount = parseInt(document.getElementById('candy-amount').value);
+            candyList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            // Validate candy name (no numbers allowed)
+            if (/\d/.test(candyName)) {
+                alert("Invalid candy name. Numbers are not allowed.")
+                return;
+            }
+
+            // Check if candy is in inventory
+            candies.forEach(product => {
+                if (candyName === product.name) {
+                    if (product.inventory >= candyAmount && candyAmount>=0) {
+                        const productBox = document.createElement("div");
+                        productBox.className = "product-box";
+
+                        const productImage = document.createElement("img");
+                        productImage.alt = product.name;
+                        productImage.src = `Images/${product.name}.png`;
+
+                        const productName = document.createElement("strong");
+                        productName.textContent = `Name: ${product.name}`;
+
+                        const quantity = document.createElement("span");
+                        quantity.className = "quantity";
+                        quantity.textContent = "1 KG";
+
+                        const price = document.createElement("span");
+                        price.className = "price";
+                        price.textContent = `Price: $${product.price}`;
+
+                        const cartBtn = document.createElement("a");
+                        cartBtn.href = "#";
+                        cartBtn.className = "cart-btn";
+                        cartBtn.style.textDecoration = "none";
+                        cartBtn.innerHTML = `
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    `;
+
+                        cartBtn.addEventListener("click", () => addToCart(product.name,candyAmount));
+
+                        productBox.appendChild(productImage);
+                        productBox.appendChild(productName);
+                        productBox.appendChild(quantity);
+                        productBox.appendChild(price);
+                        productBox.appendChild(cartBtn);
+                        productContainer.appendChild(productBox);
+
+                        candyList.appendChild(productContainer);
+
+                    }
+                    else if (product.inventory < candyAmount){
+                        alert("This item is out of stock.");
+
+                    }
+                    else if(candyAmount<0){
+                        alert("Amount cannot be negative.");
+
+                    }
+                }
+            });
+        }
+
+
+        initializeData();
+        displayInitialCandies();
+
+        candySelect.addEventListener('submit', displayCandies);
+    </script>
+</body>
+</html>
+
+
+
+

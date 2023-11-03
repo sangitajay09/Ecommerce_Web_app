@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" class="cart-btn" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+            <h1>Pantry</h1>
+                <!-- Category selection -->
+                <label for="category">Select a category:</label>
+                <select id="category">
+                    <option value="shop-all">Shop All</option>
+                    <option value="canned-goods">Canned Goods</option>
+                    <option value="canned-vegetables">Canned Vegetables</option>
+                    <option value="condiments">Condiments</option>
+                    <option value="peanut-butter">Peanut Butter & Spread</option>
+                    <option value="pasta-pizza">Pasta & Pizza</option>
+                    <option value="rollbacks">Rollbacks</option>
+                </select>
+
+                <div id ="success_added"></div>
+
+                <!-- Product display and cart -->
+                <div id="product-list"></div>
+        </div>
+
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        const pantry = [
+            { name: "Ben's ready rice", category: "canned-goods", price: 10, inventory: 3 },
+            { name: "Garden rotini", category: "canned-goods", price: 8, inventory: 6 },
+            { name: "Tomato paste", category: "canned-goods", price: 6, inventory: 9 },
+
+            { name: "Green beans", category: "canned-vegetables", price: 3, inventory: 10 },
+            { name: "Mixed vegetables", category: "canned-vegetables", price: 4, inventory: 8 },
+            { name: "Whole kernel corn", category: "canned-vegetables", price: 4, inventory: 7 },
+
+            { name: "Ketchup", category: "condiments", price: 3, inventory: 15 },
+            { name: "Mustard", category: "condiments", price: 2, inventory: 10 },
+            { name: "Salt", category: "condiments", price: 2, inventory: 13 },
+            { name: "Kidney beans", category: "condiments", price: 3, inventory: 11 },
+
+            { name: "Creamy peanut butter", category: "peanut-butter", price: 6, inventory: 7 },
+            { name: "Strawberry jam", category: "peanut-butter", price: 4, inventory: 9 },
+            { name: "Nutella", category: "peanut-butter", price: 8, inventory: 5 },
+            { name: "Almond butter", category: "peanut-butter", price: 9, inventory: 4 },
+
+            { name: "Spaghetti", category: "pasta-pizza", price: 2, inventory: 20 },
+            { name: "Fusilli pasta", category: "pasta-pizza", price: 3, inventory: 18 },
+            { name: "Pizza dough", category: "pasta-pizza", price: 4, inventory: 15 },
+            { name: "Pizza sauce", category: "pasta-pizza", price: 3, inventory: 16 },
+
+            { name: "Kroger Purified Bottled Water", category: "rollbacks", price: 8, inventory: 12 },
+            { name: "Kroger Sour cream", category: "rollbacks", price: 9, inventory: 11 },
+            { name: "Kroger Alkaline Bottled Water", category: "rollbacks", price: 10, inventory: 10 }
+
+        ];
+
+
+        const categorySelect = document.getElementById("category");
+        const productList = document.getElementById("product-list");
+        const success_added = document.getElementById("success_added");
+
+        // Function to initialize product data and cart data in localStorage if not already set
+        function initializeData() {
+            if (!localStorage.getItem("pantry")) {
+                localStorage.setItem("pantry", JSON.stringify(pantry));
+            }
+            if (!localStorage.getItem("cart")) {
+                localStorage.setItem("cart", JSON.stringify([]));
+            }
+        }
+
+
+        // Function to update product data in localStorage
+        function updateProductData(products) {
+            localStorage.setItem("pantry", JSON.stringify(products));
+        }
+
+        // Function to retrieve product data from localStorage
+        function getProductsFromStorage() {
+            return JSON.parse(localStorage.getItem("pantry"));
+        }
+
+        // Function to retrieve cart data from localStorage
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Function to update the cart and display success message
+        function updateCartAndDisplaySuccess(product, cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        }
+
+        // Function to add a product to the cart
+        function addToCart(productName) {
+            const products = getProductsFromStorage();
+            const cart = getCartFromStorage();
+
+            const product = products.find(p => p.name === productName);
+            if (product && product.inventory > 0) {
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                updateCartAndDisplaySuccess(product, cart);
+                product.inventory -= 1;
+                updateProductData(products);
+            } else {
+                alert("This item is out of stock.");
+            }
+        }
+
+
+
+        // Function to display products based on the selected category
+        function displayProducts() {
+            const selectedCategory = categorySelect.value;
+            productList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            pantry.forEach(product => {
+            if (selectedCategory === "shop-all" || product.category === selectedCategory) {
+                    const productBox = document.createElement("div");
+                    productBox.className = "product-box";
+
+                    const productImage = document.createElement("img");
+                    productImage.alt = product.name;
+                    productImage.src = `Images/${product.name}.png`;
+
+                    const productName = document.createElement("strong");
+                    productName.textContent = `Name: ${product.name}`;
+
+                    const quantity = document.createElement("span");
+                    quantity.className = "quantity";
+                    quantity.textContent = "1 KG";
+
+                    const price = document.createElement("span");
+                    price.className = "price";
+                    price.textContent = `Price: $${product.price}`;
+
+                    const cartBtn = document.createElement("a");
+                    cartBtn.href = "#";
+                    cartBtn.className = "cart-btn";
+                    cartBtn.style.textDecoration = "none";
+                    cartBtn.innerHTML = `
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    `;
+
+                    // <!-- Modify the "Add to Cart" button -->
+                    // cartBtn.innerHTML = `<a href="#" class="cart-btn" style='text-decoration: none;' onclick="addToCart('${product.name}')">
+                    //     <i class="fas fa-shopping-bag"></i> Add to Cart
+                    // </a>`;
+                    cartBtn.addEventListener("click", () => addToCart(product.name));
+
+
+
+                    productBox.appendChild(productImage);
+                    productBox.appendChild(productName);
+                    productBox.appendChild(quantity);
+                    productBox.appendChild(price);
+                    productBox.appendChild(cartBtn);
+                    productContainer.appendChild(productBox);
+
+                    productList.appendChild(productContainer);
+                }
+            });
+        }
+
+        // Function to add a product to the cart
+        // function addToCart(productName) {
+        //     const product = products.find(p => p.name === productName);
+        //     if (product && product.inventory > 0) {
+        //         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+        //         const existingItem = existingCart.find(item => item.name === product.name);
+        //         if (existingItem) {
+        //             // If the item already exists in the cart, increment the quantity
+        //             existingItem.quantity += 1;
+        //         } else {
+        //             // If it's a new item, add it to the existing cart
+        //             existingCart.push({...product, quantity: 1});
+        //         }
+        //         localStorage.setItem("cart", JSON.stringify(existingCart));
+        //         success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        //         product.inventory -= 1;
+        //
+        //     } else {
+        //         alert("This item is out of stock.");
+        //     }
+        // }
+
+        // Initial display
+        initializeData();
+        displayProducts();
+
+        // Event listener for category selection
+        categorySelect.addEventListener("change", displayProducts);
+
+
+
+
+    </script>
+</body>
+</html>
+
+
+
+

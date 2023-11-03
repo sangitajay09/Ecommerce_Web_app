@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My account</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" class="cart-btn" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+            <h1> My account</h1>
+            <div id="user_information">
+
+                <div id="user_image">
+                    <img src="">
+                </div>
+
+                <div id="user_details">
+                    <label>Name:</label>
+                    <input type="text" name="name">
+
+                    <label>Address:</label>
+                    <input type="text" name="address">
+
+                    <label>Email:</label>
+                    <input type="email" name="email">
+
+                    <label>Contact No:</label>
+                    <input type="text" name="mobile" pattern="[789][0-9]{9}"  required>
+		        </div>
+	        </div>
+
+            <div id="user_controls">
+                <input type="file" name="pic" accept="image/*" style="float: left;">
+                <button style="float: right;">save</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+</body>
+</html>
+
+
+
+

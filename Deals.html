@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+
+            <div class = 'image-container'>
+                <img src = 'Images/Deal1.png' alt = 'Best Deals Everyday' id = 'content1' width="400" height="200">
+
+                <img src = 'Images/Deal2.png' alt = 'Best Deals On Medicines' id = 'content2' width="400" height="200">
+
+                <img src = 'Images/Deal3.png' alt = 'Best Deals On Fruits and Vegetables' id = 'content3' width="400" height="200">
+
+                <img src = 'Images/Deal4.png' alt = 'Best Deals on Baby Care Products' id = 'content4' width="400" height="200">
+
+            </div>
+
+            <table class="deal_table" border="1px solid black">
+                <tr>
+                    <th> Deal Name </th>
+                    <th> Department </th>
+                    <th> Validity </th>
+                    <th> Claim </th>
+                </tr>
+                <tr>
+                    <td> <a href="#"> Winter_essential </a> </td>
+                    <td> Beauty and skincare </td>
+                    <td> till 10/25/23 </td>
+                    <td><button type="button" id = "claim_button"> Claim </button></td>
+                </tr>
+                <tr>
+                    <td> <a href="#"> Beauty101 </a> </td>
+                    <td> Beauty and skincare </td>
+                    <td> till 09/22/23 </td>
+                    <td><button type="button"> Claim </button></td>
+                </tr>
+                <tr>
+                    <td> <a href="#"> Every_day_sale </a> </td>
+                    <td> All dept </td>
+                    <td> till 12/30/23 </td>
+                    <td><button type="button"> Claim </button></td>
+                </tr>
+            </table>
+
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+</body>
+</html>
+
+
+
+

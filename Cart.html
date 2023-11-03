@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_Products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+            <h1>Cart Information</h1>
+            <div id = "item">
+            </div>
+            <table id="cartItems" border="1px solid black">
+                <thead>
+                    <tr>
+                        <th>Product name</th>
+                        <th>Price per item</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+
+            <div id="totalCartValue">
+
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        const cartItems = JSON.parse(localStorage.getItem("cart"));
+        const cartItemsContainer = document.getElementById("cartItems");
+        cartItems.forEach(item => {
+            const cartItemRow = document.createElement("tr");
+
+            const productNameCell = document.createElement("td");
+            productNameCell.textContent = item.name;
+
+            const priceCell = document.createElement("td");
+            priceCell.textContent = `$${item.price}`;
+
+            const quantityCell = document.createElement("td");
+            quantityCell.textContent = item.quantity;
+
+            cartItemRow.appendChild(productNameCell);
+            cartItemRow.appendChild(priceCell);
+            cartItemRow.appendChild(quantityCell);
+            cartItemsContainer.appendChild(cartItemRow);
+
+        });
+        calculateTotalCartValue();
+
+        function calculateTotalCartValue(){
+
+            const cartItems = JSON.parse(localStorage.getItem("cart"))
+            var totalVal = 0;
+
+
+            if (cartItems.length > 0) {
+
+                cartItems.forEach(item => {
+
+                    totalVal += parseFloat((item.price*item.quantity).toFixed(2));
+
+                });
+            }
+
+
+            const totalValElement = document.getElementById("totalCartValue");
+
+            totalValElement.innerText = "Total cart value is: $"+ totalVal.toFixed(2);
+
+        }
+
+
+    </script>
+</body>
+</html>
+
+
+
+

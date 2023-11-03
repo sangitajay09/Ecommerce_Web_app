@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" class="cart-btn" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+
+            <h1>Special Offer Page</h1>
+            <div id="question-container">
+                <p id="question"></p>
+                <label for="answer">Select an option:</label>
+                <select id="answer">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+                <br><br>
+                <button id="next-btn">Next</button>
+                <br><br>
+                <button id="skip-btn">Skip</button>
+            </div>
+            <div id="result-container" style="display: none;">
+                <p id="qualification-reason"></p>
+                <p id="special-offer"></p>
+                <p id="time-spent"></p>
+            </div>
+<!--            <h1>Skincare and Beauty products</h1>-->
+<!--            <div class="product-container">-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="beard oil" src="Images/Beard%20Oil.jpg">-->
+<!--                    <strong>Beard Oil</strong>-->
+<!--                    <span class="quantity">500 ml</span>-->
+<!--                    <span class="price">$ 10</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="face cream" src="Images/Face%20Cream.jpg">-->
+<!--                    <strong>Face cream</strong>-->
+<!--                    <span class="quantity">400 ml</span>-->
+<!--                    <span class="price">$ 8</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="face wash" src="Images/Lakme%20Facewash.jpg">-->
+<!--                    <strong>Face wash</strong>-->
+<!--                    <span class="quantity">250 ml</span>-->
+<!--                    <span class="price">$ 5</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="lip balm" src="Images/Lip%20Balm.jpg">-->
+<!--                    <strong>Lip balm</strong>-->
+<!--                    <span class="quantity">20 ml</span>-->
+<!--                    <span class="price">$ 3</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="moisturizer" src="Images/Moisturizer.jpg">-->
+<!--                    <strong>Moisturizer</strong>-->
+<!--                    <span class="quantity">750 ml</span>-->
+<!--                    <span class="price">$ 8</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash;box&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                <div class="product-box">-->
+<!--                    <img alt="men face wash" src="Images/Men's%20Face%20Wash.jpg">-->
+<!--                    <strong>Men's face wash</strong>-->
+<!--                    <span class="quantity">750 ml</span>-->
+<!--                    <span class="price">$ 20</span>-->
+<!--                    &lt;!&ndash;cart-btn-&#45;&#45;&#45;&#45;&ndash;&gt;-->
+<!--                    <a href="#" class="cart-btn" style = 'text-decoration: none;'>-->
+<!--                        <i class="fas fa-shopping-bag"></i> Add to Cart-->
+<!--                    </a>-->
+
+<!--                </div>-->
+<!--            </div>-->
+
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        const questions = [
+            "Are you a student?",
+            "Are you a low-income person?",
+            "Do you have a loyalty card?"
+        ];
+
+        const criteria = [
+            { answer: null, qualification: "You are a student." },
+            { answer: null, qualification: "You are a low-income person." },
+            { answer: null, qualification: "You have a loyalty card." }
+        ];
+
+        let currentQuestion = 0;
+        let timeStarted = 0;
+
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const questionText = document.getElementById('question');
+        const answerSelect = document.getElementById('answer');
+        const nextButton = document.getElementById('next-btn');
+        const skipButton = document.getElementById('skip-btn');
+        const qualificationReason = document.getElementById('qualification-reason');
+        const specialOffer = document.getElementById('special-offer');
+        const timeSpent = document.getElementById('time-spent');
+
+        function showQuestion() {
+            if (currentQuestion < questions.length) {
+                questionText.textContent = questions[currentQuestion];
+                answerSelect.value = 'no'; // Reset the answer
+                questionContainer.style.display = 'block';
+                resultContainer.style.display = 'none';
+                timeStarted = Date.now();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+
+            const qualifiedCriteria = criteria.filter((c, index) => c.answer === 'yes' && index < currentQuestion);
+            const qualificationReasonText = qualifiedCriteria.map(c => c.qualification).join(',  ');
+
+            qualificationReason.textContent = `Based on your answers - ${qualificationReasonText}`;
+            // specialOffer.textContent = `Because of ${qualificationReasonText}, you qualify for a special offer!`;
+            specialOffer.textContent = generateSpecialOffer(qualifiedCriteria);
+            const timeElapsed = (Date.now() - timeStarted) / 1000;
+            timeSpent.textContent = `Time spent: ${timeElapsed} seconds`;
+        }
+
+        function generateSpecialOffer(selectedCriteria) {
+            // Create different offers based on the selected criteria
+            if (selectedCriteria.length === 3) {
+                return "You qualify for a 30% discount on your purchase!";
+            } else if (selectedCriteria.length === 2) {
+                return "You qualify for a 20% discount on your purchase!";
+            } else if (selectedCriteria.length === 1) {
+                return "You qualify for a 10% discount on your purchase!";
+            } else {
+                return "Unfortunately, you do not qualify for any special offer at this time.";
+            }
+        }
+
+        nextButton.addEventListener('click', () => {
+            criteria[currentQuestion].answer = answerSelect.value;
+            currentQuestion++;
+            showQuestion();
+        });
+
+        skipButton.addEventListener('click', () => {
+            currentQuestion++;
+            showQuestion();
+        });
+
+        showQuestion();
+
+    </script>
+
+</body>
+</html>
+
+
+
+

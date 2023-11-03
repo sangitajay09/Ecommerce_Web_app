@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" class="cart-btn" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+             <h1>Welcome to Our Online Grocery Store !!</h1>
+            <p><strong>Discover a wide selection of fresh, frozen, pantry essentials, snacks, and more.</strong></p>
+            <p><strong>Shop the best deals and save on your favorite products.</strong></p>
+            <p><strong>Start your grocery shopping adventure with us today!</strong></p>
+            <p>We provide:</p>
+            <ul>
+                <li>Fresh fruits and vegetables sourced locally</li>
+                <li>High-quality frozen foods</li>
+                <li>Pantry staples for your everyday needs</li>
+                <li>Delicious breakfast and cereal options</li>
+                <li>Baking ingredients and supplies</li>
+                <li>A wide range of snacks and candies</li>
+                <li>Specialty shops for unique items</li>
+                <li>Exclusive deals and discounts</li>
+            </ul>
+            <a href="Fresh_Products.html" class="btn">Shop Now</a>
+
+            <img src="veg.jpg"
+            alt="" width="250" height="200">
+
+            <img src="fruits.jpg"
+            alt="" width=250" height="200">
+
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        if (!sessionStorage.getItem('initialPageLoaded')) {
+            // Clear the localStorage variable
+            // localStorage.removeItem('cart');
+            localStorage.clear();
+            // Set the session flag to indicate that the initial page has been loaded
+            sessionStorage.setItem('initialPageLoaded', 'true');
+        }
+    </script>
+
+</body>
+
+</html>
+
+
+
+

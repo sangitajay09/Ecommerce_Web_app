@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="specialty_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+            <h1>Frozen</h1>
+            <label for="category">Select a category:</label>
+            <select id="category">
+                <option value="shop-all">Shop All</option>
+                <option value="breakfast">Frozen Breakfast</option>
+                <option value="dessert">Frozen Dessert</option>
+                <option value="meals">Frozen Meals</option>
+                <option value="pizza">Frozen Pizza</option>
+                <option value="meat">Frozen Meat</option>
+                <option value="snacks">Frozen Snacks</option>
+                <option value="rollbacks">Rollbacks</option>
+            </select>
+
+            <div id ="success_added"></div>
+
+            <!-- Frozen display and cart -->
+            <div  id="frozen-list"></div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        frozens = [
+            { name: "Eggo Waffles", category: "breakfast", price: 3.99, inventory: 3 },
+            { name: "Quaker Oats", category: "breakfast", price: 4.49, inventory: 8 },
+            { name: "Kashi Blueberry Waffles", category: "breakfast", price: 4.29, inventory: 6 },
+
+            { name: "Ben & Jerry's Ice Cream", category: "dessert", price: 4.99, inventory: 10 },
+            { name: "Haagen-Dazs Vanilla Ice Cream", category: "dessert", price: 5.49, inventory: 8 },
+            { name: "Magnum Double Caramel Ice Cream Bars", category: "dessert", price: 6.29, inventory: 6 },
+
+            { name: "Broccoli florets", category: "meals", price: 6.99, inventory: 10 },
+            { name: "Lean Cuisine Chicken Alfredo", category: "meals", price: 5.49, inventory: 8 },
+            { name: "Mixed vegetables", category: "meals", price: 3.99, inventory: 8 },
+
+            { name: "Totino's pizza rolls", category: "pizza", price: 6.49, inventory: 8 },
+            { name: "Tombstone Original 5 Cheese Pizza", category: "pizza", price: 6.79, inventory: 9 },
+            { name: "Totino's Combination Party Pizza", category: "pizza", price: 3.99, inventory: 8 },
+
+            { name: "Tyson Chicken Nuggets", category: "meat", price: 4.99, inventory: 10 },
+            { name: "Oven roasters", category: "meat", price: 3.99, inventory: 7 },
+            { name: "Johnsonville Italian Sausage", category: "meat", price: 4.29, inventory: 6 },
+
+            { name: "Hot Pockets Ham & Cheese", category: "snacks", price: 2.99, inventory: 10 },
+            { name: "Bagel Bites Three Cheese", category: "snacks", price: 3.49, inventory: 8 },
+            { name: "tater tots", category: "snacks", price: 4.99, inventory: 8 },
+
+            { name: "Kroger Purified Bottled Water", category: "rollbacks", price: 8, inventory: 12 },
+            { name: "Kroger Sour cream", category: "rollbacks", price: 9, inventory: 11 },
+            { name: "Kroger Alkaline Bottled Water", category: "rollbacks", price: 10, inventory: 10 }
+
+
+        ];
+
+        const categorySelect = document.getElementById("category");
+        const frozenList = document.getElementById("frozen-list");
+        const success_added = document.getElementById("success_added");
+
+        // Function to initialize frozen data and cart data in localStorage if not already set
+        function initializeData() {
+            if (!localStorage.getItem("frozens")) {
+                localStorage.setItem("frozens", JSON.stringify(frozens));
+            }
+            if (!localStorage.getItem("cart")) {
+                localStorage.setItem("cart", JSON.stringify([]));
+            }
+        }
+
+
+        // Function to update frozen data in localStorage
+        function updateProductData(products) {
+            localStorage.setItem("frozens", JSON.stringify(products));
+        }
+
+        // Function to retrieve frozen data from localStorage
+        function getProductsFromStorage() {
+            return JSON.parse(localStorage.getItem("frozens"));
+        }
+
+        // Function to retrieve cart data from localStorage
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Function to update the cart and display success message
+        function updateCartAndDisplaySuccess(product, cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        }
+
+        // Function to add a frozen to the cart
+        function addToCart(productName) {
+            const products = getProductsFromStorage();
+            const cart = getCartFromStorage();
+
+            const product = products.find(p => p.name === productName);
+            if (product && product.inventory > 0) {
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ ...product, quantity: 1 });
+                }
+                updateCartAndDisplaySuccess(product, cart);
+                product.inventory -= 1;
+                updateProductData(products);
+            } else {
+                alert("This item is out of stock.");
+            }
+        }
+
+
+        // Function to display frozen based on the selected category
+        function displayFrozens() {
+            const selectedCategory = categorySelect.value;
+            frozenList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            frozens.forEach(product => {
+            if (selectedCategory === "shop-all" || product.category === selectedCategory) {
+                    const productBox = document.createElement("div");
+                    productBox.className = "product-box";
+
+                    const productImage = document.createElement("img");
+                    productImage.alt = product.name;
+                    productImage.src = `Images/${product.name}.png`;
+
+                    const productName = document.createElement("strong");
+                    productName.textContent = `Name: ${product.name}`;
+
+                    const quantity = document.createElement("span");
+                    quantity.className = "quantity";
+                    quantity.textContent = "1 KG";
+
+                    const price = document.createElement("span");
+                    price.className = "price";
+                    price.textContent = `Price: $${product.price}`;
+
+                    const cartBtn = document.createElement("a");
+                    cartBtn.href = "#";
+                    cartBtn.className = "cart-btn";
+                    cartBtn.style.textDecoration = "none";
+                    cartBtn.innerHTML = `
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    `;
+
+                    // <!-- Modify the "Add to Cart" button -->
+                    // cartBtn.innerHTML = `<a href="#" class="cart-btn" style='text-decoration: none;' onclick="addToCart('${product.name}')">
+                    //     <i class="fas fa-shopping-bag"></i> Add to Cart
+                    // </a>`;
+                    cartBtn.addEventListener("click", () => addToCart(product.name));
+
+                    productBox.appendChild(productImage);
+                    productBox.appendChild(productName);
+                    productBox.appendChild(quantity);
+                    productBox.appendChild(price);
+                    productBox.appendChild(cartBtn);
+                    productContainer.appendChild(productBox);
+
+                    frozenList.appendChild(productContainer);
+                }
+            });
+        }
+
+        // // Function to add a frozen to the cart
+        // function addToCart(productName) {
+        //     const product = products.find(p => p.name === productName);
+        //     if (product && product.inventory > 0) {
+        //         const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+        //         const existingItem = existingCart.find(item => item.name === product.name);
+        //         if (existingItem) {
+        //             // If the item already exists in the cart, increment the quantity
+        //             existingItem.quantity += 1;
+        //         } else {
+        //             // If it's a new item, add it to the existing cart
+        //             existingCart.push({...product, quantity: 1});
+        //         }
+        //         localStorage.setItem("cart", JSON.stringify(existingCart));
+        //         success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        //         product.inventory -= 1;
+        //
+        //     } else {
+        //         alert("This item is out of stock.");
+        //     }
+        // }
+
+        // Initial display
+        initializeData();
+        displayFrozens();
+
+        // Event listener for category selection
+        categorySelect.addEventListener("change", displayFrozens);
+    </script>
+</body>
+</html>
+
+
+
+

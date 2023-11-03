@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Online Grocery Store</title>
+    <link rel="stylesheet" type=" text/css" href ="mystyle.css">
+    <script src = "myscript.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Online Grocery Store</h1>
+    </header>
+
+    <ul class="menu">
+        <li><a href="Mainpage.html">Home</a></li>
+        <li><a href="fresh_products.html">Fresh Products</a></li>
+        <li><a href="frozen.html">Frozen</a></li>
+        <li><a href="pantry.html">Pantry</a></li>
+        <li><a href="breakfast_and_cereal.html">Breakfast & Cereal</a></li>
+        <li><a href="baking.html">Baking</a></li>
+        <li><a href="snacks.html">Snacks</a></li>
+        <li><a href="candy.html">Candy</a></li>
+        <li><a href="speciality_shops.html">Specialty Shops</a></li>
+        <li><a href="deals.html">Deals</a></li>
+        <li><a href="my_account.html">My Account</a></li>
+        <li><a href="about_us.html">About Us</a></li>
+        <li><a href="contact_us.html">Contact Us</a></li>
+        <li><a href="cart.html">Cart</a></li>
+        <li><a href="Mainpage.html" class="cart-btn" onclick="clearLocalStorageOnLogout()">Logout</a></li>
+        <p id = "current-time"></p>
+
+    </ul>
+
+    <section>
+        <div class="side">
+            <h3> New <em>offers</em> available</h3>
+            <ol>
+                <li> 10% Cashback on $100 grocery shopping </li>
+                <br><br>
+                <li> 15% Treat yourself but with a discount </li>
+                <br><br>
+                <li> Summer Bonanza offer - Free online delivery on shopping over $75</li>
+
+            </ol>
+        </div>
+
+        <div class = "main-content">
+            <h1>Explore our wide selection of Snacks...</h1>
+            <ul>
+                <li>Cheese it</li>
+                <li>Chips deluxe</li>
+                <li>Nutter butter nuggets</li>
+                <li>Sun chips and many more ...</li>
+            </ul>
+            <!-- Search Form -->
+            <form id="search-form">
+                <label for="snack-name">Enter Snack Name:</label>
+                <input type="text" id="snack-name" required>
+                <label for="snack-amount">Enter Amount:</label>
+                <input type="number" id="snack-amount" required>
+                <button type="button" onclick="displaySnacks()">Search</button>
+            </form>
+
+            <div id ="success_added"></div>
+
+            <!-- Sancks display and cart -->
+            <div  id="snack-list"></div>
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2023 Online Grocery Store -
+        Sangita Jayendran
+        SXJ210062
+    </footer>
+    <script>
+        const snacks =[
+            { name: "Cheese it", price: 10, inventory: 10 },
+            { name: "Chips deluxe", price: 8, inventory: 6 },
+            { name: "Nutter butter", price: 6, inventory: 9 },
+            { name: "Sun chips", price: 12, inventory: 7 },
+            { name: "Welch fruit snack", price: 7, inventory: 5 },
+            { name: "Triscuit", price: 9, inventory: 8 },
+        ];
+
+
+        const snackSelect = document.getElementById('search-form');
+        const snackList = document.getElementById('snack-list');
+
+        // Function to initialize product data and cart data in localStorage if not already set
+        function initializeData() {
+            if (!localStorage.getItem("snacks")) {
+                localStorage.setItem("snacks", JSON.stringify(snacks));
+            }
+            if (!localStorage.getItem("cart")) {
+                localStorage.setItem("cart", JSON.stringify([]));
+            }
+        }
+
+
+        // Function to update product data in localStorage
+        function updateProductData(products) {
+            localStorage.setItem("snacks", JSON.stringify(products));
+        }
+
+        // Function to retrieve product data from localStorage
+        function getProductsFromStorage() {
+            return JSON.parse(localStorage.getItem("snacks"));
+        }
+
+        // Function to retrieve cart data from localStorage
+        function getCartFromStorage() {
+            return JSON.parse(localStorage.getItem("cart"));
+        }
+
+        // Function to update the cart and display success message
+        function updateCartAndDisplaySuccess(product, cart) {
+            localStorage.setItem("cart", JSON.stringify(cart));
+            success_added.innerHTML = `${product.name} - $${product.price} is added to the cart`;
+        }
+
+
+        function addToCart(productName,snackAmount) {
+            const products = getProductsFromStorage();
+            const cart = getCartFromStorage();
+            const product = products.find(p => p.name === productName);
+
+            if (product && product.inventory > 0 && snackAmount<=product.inventory) {
+
+                // const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
+                const existingItem = cart.find(item => item.name === product.name);
+                if (existingItem) {
+                    // If the item already exists in the cart, increment the quantity
+                    existingItem.quantity += snackAmount;
+                } else {
+                    // If it's a new item, add it to the existing cart
+                    cart.push({...product, quantity: snackAmount});
+                }
+                updateCartAndDisplaySuccess(product, cart);
+
+                // localStorage.setItem("cart", JSON.stringify(existingCart));
+                // success_added.innerHTML = `${product.name} - $${snackAmount*product.price} is added to the cart`;
+                product.inventory -= snackAmount;
+                updateProductData(products);
+
+
+            } else {
+                alert("This item is out of stock.");
+            }
+        }
+
+
+        function displayInitialSnacks(){
+            snackList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            // Check if snack is in inventory
+            snacks.forEach(product => {
+                const productBox = document.createElement("div");
+                productBox.className = "product-box";
+
+                const productImage = document.createElement("img");
+                productImage.alt = product.name;
+                productImage.src = `Images/${product.name}.png`;
+
+                const productName = document.createElement("strong");
+                productName.textContent = `Name: ${product.name}`;
+
+                const quantity = document.createElement("span");
+                quantity.className = "quantity";
+                quantity.textContent = "1 KG";
+
+                const price = document.createElement("span");
+                price.className = "price";
+                price.textContent = `Price: $${product.price}`;
+
+                const cartBtn = document.createElement("a");
+                cartBtn.href = "#";
+                cartBtn.className = "cart-btn";
+                cartBtn.style.textDecoration = "none";
+                cartBtn.innerHTML = `
+                <i class="fas fa-shopping-bag"></i> Add to Cart
+            `;
+
+                cartBtn.addEventListener("click", () => addToCart(product.name));
+
+                productBox.appendChild(productImage);
+                productBox.appendChild(productName);
+                productBox.appendChild(quantity);
+                productBox.appendChild(price);
+                productBox.appendChild(cartBtn);
+                productContainer.appendChild(productBox);
+
+                snackList.appendChild(productContainer);
+
+            });
+        }
+
+        function displaySnacks(){
+
+            const snackName = document.getElementById('snack-name').value;
+            const snackAmount = parseInt(document.getElementById('snack-amount').value);
+            snackList.innerHTML = "";
+
+            const productContainer = document.createElement("div");
+            productContainer.className = "product-container";
+
+            // Validate snack name (no numbers allowed)
+            if (/\d/.test(snackName)) {
+                alert("Invalid snack name. Numbers are not allowed.")
+                return;
+            }
+
+            // Check if snack is in inventory
+            snacks.forEach(product => {
+                if (snackName === product.name) {
+
+                    if (product.inventory >= snackAmount && snackAmount>=0) {
+                        const productBox = document.createElement("div");
+                        productBox.className = "product-box";
+
+                        const productImage = document.createElement("img");
+                        productImage.alt = product.name;
+                        productImage.src = `Images/${product.name}.png`;
+
+                        const productName = document.createElement("strong");
+                        productName.textContent = `Name: ${product.name}`;
+
+                        const quantity = document.createElement("span");
+                        quantity.className = "quantity";
+                        quantity.textContent = "1 KG";
+
+                        const price = document.createElement("span");
+                        price.className = "price";
+                        price.textContent = `Price: $${product.price}`;
+
+                        const cartBtn = document.createElement("a");
+                        cartBtn.href = "#";
+                        cartBtn.className = "cart-btn";
+                        cartBtn.style.textDecoration = "none";
+                        cartBtn.innerHTML = `
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    `;
+
+                        cartBtn.addEventListener("click", () => addToCart(product.name,snackAmount));
+
+                        productBox.appendChild(productImage);
+                        productBox.appendChild(productName);
+                        productBox.appendChild(quantity);
+                        productBox.appendChild(price);
+                        productBox.appendChild(cartBtn);
+                        productContainer.appendChild(productBox);
+
+                        snackList.appendChild(productContainer);
+
+                    }
+                    else if (product.inventory < snackAmount){
+                        alert("This item is out of stock.");
+
+                    }
+                    else if(snackAmount<0){
+                        alert("Amount cannot be negative.");
+
+                    }
+                }
+            });
+        }
+
+
+        initializeData();
+        displayInitialSnacks();
+        snackSelect.addEventListener('submit', displayCandies);
+
+    </script>
+</body>
+</html>
+
+
+
+
