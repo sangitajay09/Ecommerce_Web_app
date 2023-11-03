@@ -1,8 +1,3 @@
-CS 6314 - Assignment 3
-
-SXJ210062
-
-Sangita Jayendran
 
 Couple of things to follow for the smooth running of the code.
 
